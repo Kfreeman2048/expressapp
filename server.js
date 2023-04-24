@@ -80,9 +80,47 @@ app.get('/user/:userID', (req, res) => {
 });
 
 app.put('/user/:userID', (req, res) => {
+    try {
+        const id = parseInt(req.params.userID);
+        let user = users.find((user) => user.id === id);
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found.",
+            });
+        };
+        const usrIDX = users.indexOf(user);
+        users[userIDX].name = req.body.name || users[userIDX].name;
+        users[userIDX].age = req.body.age || users[userIDX].age;
+        res.status(200).json({
+            message: "Successfully updated user.",
+            user,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to retrieve user.",
+        });
+    };
 });
 
 app.delete('/delete/:userID', (req, res) => {
+    try {
+        const id = req.params.userID;
+        let userIDX = users.findIndex((user) => user.id === id);
+        if (!userIDX) {
+            res.status(404).json({
+                message: "User not found.",
+            });
+        };
+        users.splice(userIDX, 1);
+        res.status(200).json({
+            message: "Successfully deleted user.",
+            users,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to delete user.",
+        });
+    };
 });
 
 app.delete('/users', (req, res) => {
