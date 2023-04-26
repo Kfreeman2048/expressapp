@@ -10,12 +10,12 @@ app.listen(PORT, () => {
 const users = [{
     id: 1,
     name: "Jane Doe",
-    age:"22",
+    age:"22"
     },
     {
     id: 2,
     name: "John Doe",
-    age: "31",
+    age: "31"
 }];
 
 app.post('/create', (req, res) => {
@@ -59,7 +59,7 @@ app.get('/users', (req, res) => {
     };
 });
 
-app.get('/user/:userID', (req, res) => {
+app.get('/users/:userID', (req, res) => {
     const id = parseInt(req.params.userID);
     console.log(id);
     try {
@@ -79,7 +79,7 @@ app.get('/user/:userID', (req, res) => {
     };
 });
 
-app.put('/user/:userID', (req, res) => {
+app.put('/users/:userID', (req, res) => {
     try {
         const id = parseInt(req.params.userID);
         let user = users.find((user) => user.id === id);
@@ -88,7 +88,7 @@ app.put('/user/:userID', (req, res) => {
                 message: "User not found.",
             });
         };
-        const usrIDX = users.indexOf(user);
+        const userIDX = users.indexOf(user);
         users[userIDX].name = req.body.name || users[userIDX].name;
         users[userIDX].age = req.body.age || users[userIDX].age;
         res.status(200).json({
@@ -105,7 +105,12 @@ app.put('/user/:userID', (req, res) => {
 app.delete('/delete/:userID', (req, res) => {
     try {
         const id = req.params.userID;
-        let userIDX = users.findIndex((user) => user.id === id);
+        let deletedUser;
+        let userIDX = users.findIndex((user) => 
+        {
+            user.id === id;
+            deletedUser = user;
+        });
         if (!userIDX) {
             res.status(404).json({
                 message: "User not found.",
@@ -114,7 +119,7 @@ app.delete('/delete/:userID', (req, res) => {
         users.splice(userIDX, 1);
         res.status(200).json({
             message: "Successfully deleted user.",
-            users,
+            deletedUser,
         });
     } catch (error) {
         res.status(500).json({
@@ -132,7 +137,7 @@ app.delete('/users', (req, res) => {
         });
     } catch (error) {
         res.status(500).json({
-            message: "Failed to delete user.",
+            message: "Failed to delete users.",
         });
     };
 });
