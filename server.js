@@ -105,19 +105,14 @@ app.put('/users/:userID', (req, res) => {
 
 app.delete('/delete/:userID', (req, res) => {
     try {
-        const id = req.params.userID;
-        let deletedUser;
-        let userIDX = users.findIndex((user) => 
-        {
-            user.id === id;
-            deletedUser = user;
-        });
+        const id = parseInt(req.params.userID);
+        let userIDX = users.findIndex(user => user.id === id);
         if (userIDX === -1) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: "User not found.",
             });
         };
-        users.splice(userIDX, 1);
+        let deletedUser = users.splice(userIDX, 1);
         res.status(200).json({
             message: "Successfully deleted user.",
             deletedUser,
