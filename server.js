@@ -39,6 +39,7 @@ app.post('/create', (req, res) => {
         users.push(newUser);
         res.status(201).json({
             message: "New user successfully created.",
+            newUser
         });
     } catch (error) {
         res.status(500).json({
@@ -111,7 +112,7 @@ app.delete('/delete/:userID', (req, res) => {
             user.id === id;
             deletedUser = user;
         });
-        if (!userIDX) {
+        if (userIDX === -1) {
             res.status(404).json({
                 message: "User not found.",
             });
