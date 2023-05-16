@@ -26,7 +26,7 @@ app.post('/create', (req, res) => {
     };
     const { name, age } = req.body;
     if (!name || !age) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "Ensure you input both name and age.",
         });
     };
