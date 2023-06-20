@@ -24,18 +24,18 @@ app.post('/create', (req, res) => {
         return res.status(400).json({
             message: "Request body cannot be empty.",
         });
-    };
+    }
     const { name, age } = req.body;
     if (!name || !age) {
         return res.status(400).json({
             message: "Ensure you input both name and age.",
         });
-    };
+    }
     const newUser = {
         id: users.length + 1,
         name,
         age,
-    };
+    }
     try {
         users.push(newUser);
         res.status(201).json({
@@ -46,7 +46,7 @@ app.post('/create', (req, res) => {
         res.status(500).json({
             message: "Failed to create new user.",
         });
-    };
+    }
 });
 
 app.get('/users', async (req, res) => {
@@ -58,7 +58,7 @@ app.get('/users', async (req, res) => {
         res.status(500).json({
             message: "Faled to retrieve all users.",
         });
-    };
+    }
 });
 
 app.get('/users/:userID', async (req, res) => {
@@ -70,7 +70,7 @@ app.get('/users/:userID', async (req, res) => {
             return res.status(404).json({
                 message: "User not found.",
             });
-        };
+        }
         res.status(200).json({
             user,
         });
@@ -78,7 +78,7 @@ app.get('/users/:userID', async (req, res) => {
         res.status(500).json({
             message: "Failed to retrieve user",
         });
-    };
+    }
 });
 
 app.put('/users/:userID', (req, res) => {
@@ -89,7 +89,7 @@ app.put('/users/:userID', (req, res) => {
             return res.status(404).json({
                 message: "User not found.",
             });
-        };
+        }
         const userIDX = users.indexOf(user);
         users[userIDX].name = req.body.name || users[userIDX].name;
         users[userIDX].age = req.body.age || users[userIDX].age;
@@ -101,7 +101,7 @@ app.put('/users/:userID', (req, res) => {
         res.status(500).json({
             message: "Failed to retrieve user.",
         });
-    };
+    }
 });
 
 app.delete('/delete/:userID', (req, res) => {
@@ -112,7 +112,7 @@ app.delete('/delete/:userID', (req, res) => {
             return res.status(404).json({
                 message: "User not found.",
             });
-        };
+        }
         let deletedUser = users.splice(userIDX, 1);
         res.status(200).json({
             message: "Successfully deleted user.",
@@ -122,7 +122,7 @@ app.delete('/delete/:userID', (req, res) => {
         res.status(500).json({
             message: "Failed to delete user.",
         });
-    };
+    }
 });
 
 app.delete('/users', (req, res) => {
@@ -136,5 +136,5 @@ app.delete('/users', (req, res) => {
         res.status(500).json({
             message: "Failed to delete users.",
         });
-    };
+    }
 });

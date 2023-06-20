@@ -22,7 +22,7 @@ db.getUsers = () => {
             return resolve(users);
         });
     });
-};
+}
 
 db.getUserById = (id) => {
     return new Promise((resolve, reject) => {
