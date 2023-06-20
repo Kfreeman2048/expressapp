@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = 8080;
+const db = require('./db_connect.js');
 app.use(express.json());
 app.use(express.urlencoded({extended: true }));
 app.listen(PORT, () => {
@@ -48,10 +49,10 @@ app.post('/create', (req, res) => {
     };
 });
 
-app.get('/users', (req, res) => {
+app.get('/users', async (req, res) => {
     try {
         res.status(200).json({
-            users
+            users: await db.getUsers(),
         });
     } catch (error) {
         res.status(500).json({
