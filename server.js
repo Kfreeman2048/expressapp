@@ -63,7 +63,6 @@ app.get('/users', async (req, res) => {
 
 app.get('/users/:userID', (req, res) => {
     const id = parseInt(req.params.userID);
-    console.log(id);
     try {
         let user = users.find ((user) => user.id === id);
         if (!user) {
