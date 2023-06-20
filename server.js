@@ -61,10 +61,11 @@ app.get('/users', async (req, res) => {
     };
 });
 
-app.get('/users/:userID', (req, res) => {
+app.get('/users/:userID', async (req, res) => {
     const id = parseInt(req.params.userID);
     try {
-        let user = users.find ((user) => user.id === id);
+        let usersFromDb = await db.getUserById(id);
+        let user = usersFromDb.find ((user) => user.id === id);
         if (!user) {
             return res.status(404).json({
                 message: "User not found.",
