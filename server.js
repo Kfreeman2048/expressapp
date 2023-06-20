@@ -115,7 +115,7 @@ app.delete('/delete/:userID', (req, res) => {
         let deletedUser = users.splice(userIDX, 1);
         res.status(200).json({
             message: "Successfully deleted user.",
-            deletedUser,
+            deletedUser: deletedUser.length > 0 ? deletedUser[0] : null,
         });
     } catch (error) {
         res.status(500).json({
