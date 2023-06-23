@@ -35,4 +35,15 @@ db.getUserById = (id) => {
     });
 }
 
+db.createUser = (name, age) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`INSERT INTO customer (first_name, age) VALUES ('${name}','${age}')`, (err,rows) => {
+            if(err) {
+                return reject(err);
+            }
+            return resolve(rows.insertId);
+        });
+    });
+}
+
 module.exports = db;

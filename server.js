@@ -19,7 +19,7 @@ const users = [{
     age: "31"
 }];
 
-app.post('/create', (req, res) => {
+app.post('/create', async (req, res) => {
     if (!Object.keys(req.body).length) {
         return res.status(400).json({
             message: "Request body cannot be empty.",
@@ -31,16 +31,11 @@ app.post('/create', (req, res) => {
             message: "Ensure you input both name and age.",
         });
     }
-    const newUser = {
-        id: users.length + 1,
-        name,
-        age,
-    }
     try {
-        users.push(newUser);
+        let newUserId = await db.createUser(name, age);
         res.status(201).json({
             message: "New user successfully created.",
-            newUser
+            newUserId,
         });
     } catch (error) {
         res.status(500).json({
@@ -56,7 +51,7 @@ app.get('/users', async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({
-            message: "Faled to retrieve all users.",
+            message: "Failed to retrieve all users.",
         });
     }
 });
