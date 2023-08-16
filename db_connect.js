@@ -45,4 +45,15 @@ db.createUser = (name, age) => {
     });
 }
 
+db.updateUser = (id, name, age) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`UPDATE customer SET first_name = '${name}', age = '${age}' WHERE id = ${id}`, (err,rows) => {
+            if(err) {
+                return reject(err);
+            }
+            return resolve(rows.updateUser);
+        });
+    });
+}
+
 module.exports = db;

@@ -76,25 +76,35 @@ app.get('/users/:userID', async (req, res) => {
     }
 });
 
-app.put('/users/:userID', (req, res) => {
+app.put('/users/:userID', async (req, res) => {
+    const id = parseInt(req.params.userID);
+    const { name, age } = req.body;
     try {
-        const id = parseInt(req.params.userID);
-        let user = users.find((user) => user.id === id);
+        if (!Object.keys(req.body).length) {
+            return res.status(400).json({
+                message: "Request body cannot be empty.",
+            });
+        }
+        if (!name && !age) {
+            return res.status(400).json({
+                message: "Name or age required.",
+            });
+        }
+        /* let usersFromDb = await db.getUserById(id);
+        let user = usersFromDb.find ((user) => user.id === id);
         if (!user) {
             return res.status(404).json({
                 message: "User not found.",
             });
-        }
-        const userIDX = users.indexOf(user);
-        users[userIDX].name = req.body.name || users[userIDX].name;
-        users[userIDX].age = req.body.age || users[userIDX].age;
-        res.status(200).json({
+        }*/
+        let updatedUser = await db.updateUser(id, name, age)
+        return res.status(200).json({
             message: "Successfully updated user.",
-            user,
+            updatedUser,
         });
     } catch (error) {
-        res.status(500).json({
-            message: "Failed to retrieve user.",
+        return res.status(500).json({
+            message: "Failed to update user.",
         });
     }
 });
