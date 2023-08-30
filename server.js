@@ -60,7 +60,7 @@ app.get('/users/:userID', async (req, res) => {
     const id = parseInt(req.params.userID);
     try {
         let usersFromDb = await db.getUserById(id);
-        let user = usersFromDb.find ((user) => user.id === id);
+        let user = usersFromDb.find ((user) => user.id === id);// can we eliminate this duplication?
         if (!user) {
             return res.status(404).json({
                 message: "User not found.",
@@ -90,18 +90,17 @@ app.put('/users/:userID', async (req, res) => {
                 message: "Name or age required.",
             });
         }
-        /* let usersFromDb = await db.getUserById(id);
-        let user = usersFromDb.find ((user) => user.id === id);
-        if (!user) {
+        let dbReturn = await db.updateUser(id, name, age) 
+        if (dbReturn.affectedRows == 0) {
             return res.status(404).json({
                 message: "User not found.",
             });
-        }*/
-        let updatedUser = await db.updateUser(id, name, age)
-        return res.status(200).json({
+        }
+        if (dbReturn.affectedRows == 1) {
+            return res.status(200).json({
             message: "Successfully updated user.",
-            updatedUser,
-        });
+            });
+        }
     } catch (error) {
         return res.status(500).json({
             message: "Failed to update user.",

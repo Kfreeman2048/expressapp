@@ -51,7 +51,7 @@ db.updateUser = (id, name, age) => {
             if(err) {
                 return reject(err);
             }
-            return resolve(rows.updateUser);
+            return resolve(rows);
         });
     });
 }
