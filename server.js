@@ -96,7 +96,7 @@ app.put('/users/:userID', async (req, res) => {
                 message: "Name or age required.",
             });
         }
-        let dbReturn = await db.updateUser(id, name, age) 
+        let dbReturn = await db.updateUser(id, name, age);
         if (dbReturn.affectedRows == 0) {
             return res.status(404).json({
                 message: "User not found.",
@@ -122,7 +122,7 @@ app.delete('/delete/:userID', async (req, res) => {
                 message: "Invalid user id.",
             });
         }
-        let dbReturn = await db.deleteUser(id)
+        let dbReturn = await db.deleteUser(id);
         if (dbReturn.affectedRows === 1) {
             return res.status(200).json({
                 message: "Successfully deleted user.",
