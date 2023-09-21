@@ -59,19 +59,25 @@ app.get('/users', async (req, res) => {
 app.get('/users/:userID', async (req, res) => {
     const id = parseInt(req.params.userID);
     try {
+        if (isNaN(id)) {
+            return res.status(400).json({
+                message: "Invalid user id.",
+            });
+        }
         let usersFromDb = await db.getUserById(id);
-        let user = usersFromDb.find ((user) => user.id === id);// can we eliminate this duplication?
-        if (!user) {
+        if (usersFromDb.length === 1) {
+            return res.status(200).json({
+                user: usersFromDb[0],
+            });
+        }
+        else {
             return res.status(404).json({
                 message: "User not found.",
             });
         }
-        res.status(200).json({
-            user,
-        });
     } catch (error) {
         res.status(500).json({
-            message: "Failed to retrieve user",
+            message: "Failed to retrieve user.",
         });
     }
 });
