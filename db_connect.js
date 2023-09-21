@@ -56,4 +56,15 @@ db.updateUser = (id, name, age) => {
     });
 }
 
+db.deleteUser = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('DELETE FROM customer WHERE id = ?', [id], (err,rows) => {
+            if(err) {
+                return reject(err);
+            }
+            return resolve(rows);
+        });
+    });
+}
+
 module.exports = db;

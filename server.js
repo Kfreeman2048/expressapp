@@ -114,20 +114,25 @@ app.put('/users/:userID', async (req, res) => {
     }
 });
 
-app.delete('/delete/:userID', (req, res) => {
+app.delete('/delete/:userID', async (req, res) => {
+    const id = parseInt(req.params.userID);
     try {
-        const id = parseInt(req.params.userID);
-        let userIDX = users.findIndex(user => user.id === id);
-        if (userIDX === -1) {
+        if (isNaN(id)) {
+            return res.status(400).json({
+                message: "Invalid user id.",
+            });
+        }
+        let dbReturn = await db.deleteUser(id)
+        if (dbReturn.affectedRows === 1) {
+            return res.status(200).json({
+                message: "Successfully deleted user.",
+            });
+        }
+        else {
             return res.status(404).json({
                 message: "User not found.",
             });
         }
-        let deletedUser = users.splice(userIDX, 1);
-        res.status(200).json({
-            message: "Successfully deleted user.",
-            deletedUser: deletedUser.length > 0 ? deletedUser[0] : null,
-        });
     } catch (error) {
         res.status(500).json({
             message: "Failed to delete user.",
