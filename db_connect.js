@@ -58,7 +58,10 @@ db.updateUser = (id, name, age) => {
 
 db.deleteUser = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('DELETE FROM customer WHERE id = ?', [id], (err,rows) => {
+        connection.query(`DELETE ca, c
+                            FROM customer.customeraddresses ca 
+                            JOIN customer.customer c on c.id = ca.customer_id 
+                            WHERE c.id = ?`, [id], (err,rows) => {
             if(err) {
                 return reject(err);
             }

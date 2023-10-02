@@ -123,7 +123,7 @@ app.delete('/delete/:userID', async (req, res) => {
             });
         }
         let dbReturn = await db.deleteUser(id);
-        if (dbReturn.affectedRows === 1) {
+        if (dbReturn.affectedRows > 0) {
             return res.status(200).json({
                 message: "Successfully deleted user.",
             });
