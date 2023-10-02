@@ -140,16 +140,3 @@ app.delete('/delete/:userID', async (req, res) => {
     }
 });
 
-app.delete('/users', (req, res) => {
-    try {
-        users.splice(0, users.length);
-        res.status(200).json({
-            message: "Successfully deleted all users.",
-            users,
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to delete users.",
-        });
-    }
-});
