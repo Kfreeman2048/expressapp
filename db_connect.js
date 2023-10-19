@@ -90,7 +90,7 @@ db.createUserAndAddress = (name, age, street, postalcode, city, country_id) => {
                                 if (commitErr) {
                                     reject(commitErr.message);
                                 }
-                                resolve([rows1, rows2, rows3]);
+                                resolve(rows2.insertId);
                             });
                         }
                     });
