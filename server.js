@@ -8,17 +8,6 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-const users = [{
-    id: 1,
-    name: "Jane Doe",
-    age:"22"
-    },
-    {
-    id: 2,
-    name: "John Doe",
-    age: "31"
-}];
-
 app.post('/create', async (req, res) => {
     if (!Object.keys(req.body).length) {
         return res.status(400).json({
