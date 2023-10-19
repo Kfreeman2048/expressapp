@@ -45,6 +45,62 @@ db.createUser = (name, age) => {
     });
 }
 
+db.createUserAndAddress = (name, age, street, postalcode, city, country_id) => {
+    return new Promise((resolve, reject) => {
+        connection.beginTransaction(err => {
+            if (err) {
+                reject(err.message);
+            }
+            connection.query(`INSERT INTO address (street, postalcode, city, country_id)
+                                VALUES ('${street}', '${postalcode}', '${city}', ${country_id})
+                                ON DUPLICATE KEY UPDATE id = id;`, (queryErr, rows1) => {
+                if (queryErr) {
+                    connection.rollback(rollbackErr => {
+                        if (rollbackErr) {
+                            reject(rollbackErr.message);
+                        } else {
+                            reject(queryErr.message);
+                        }
+                    });
+                }
+                connection.query(`INSERT INTO customer (first_name, age) VALUES ('${name}','${age}')`, (queryErr2, rows2) => {
+                    if (queryErr2) {
+                        connection.rollback(rollbackErr => {
+                            if (rollbackErr) {
+                                reject(rollbackErr.message);
+                            } else {
+                                reject(queryErr2.message);
+                            }
+                        });
+                    }
+                    connection.query(`INSERT INTO customeraddresses (customer_id, address_id)
+                                        SELECT LAST_INSERT_ID(), id
+                                        FROM address 
+                                        WHERE street = '${street}' AND postalcode = '${postalcode}' AND city = '${city}' AND country_id = ${country_id};`, (queryErr3, rows3) => {
+                        if (queryErr3) {
+                            connection.rollback(rollbackErr => {
+                                if (rollbackErr) {
+                                    reject(rollbackErr.message);
+                                } else {
+                                    reject(queryErr3.message);
+                                }
+                            });
+                        } else {
+                            connection.commit((commitErr) => {
+                                if (commitErr) {
+                                    reject(commitErr.message);
+                                }
+                                resolve([rows1, rows2, rows3]);
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    });
+}
+
+
 db.updateUser = (id, name, age) => {
     return new Promise((resolve, reject) => {
         connection.query(`UPDATE customer SET first_name = '${name}', age = '${age}' WHERE id = ${id}`, (err,rows) => {

@@ -25,14 +25,14 @@ app.post('/create', async (req, res) => {
             message: "Request body cannot be empty.",
         });
     }
-    const { name, age } = req.body;
+    const { name, age, street, postalcode, city, country_id} = req.body;
     if (!name || !age) {
         return res.status(400).json({
-            message: "Ensure you input both name and age.",
+            message: "Ensure you input a name, age, and address.",
         });
     }
     try {
-        let newUserId = await db.createUser(name, age);
+        let newUserId = await db.createUserAndAddress(name, age, street, postalcode, city, country_id);
         res.status(201).json({
             message: "New user successfully created.",
             newUserId,
