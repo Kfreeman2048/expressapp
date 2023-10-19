@@ -26,9 +26,9 @@ app.post('/create', async (req, res) => {
         });
     }
     const { name, age, street, postalcode, city, country_id} = req.body;
-    if (!name || !age) {
+    if (!name || !age || !street || !postalcode || !city || !country_id) {
         return res.status(400).json({
-            message: "Ensure you input a name, age, and address.",
+            message: "Ensure you input a name, age, and full address.",
         });
     }
     try {
