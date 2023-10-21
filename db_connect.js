@@ -42,7 +42,7 @@ db.createUserAndAddress = (name, age, street, postalcode, city, country_id) => {
             }
             connection.query(`INSERT INTO address (street, postalcode, city, country_id)
                                 VALUES ('${street}', '${postalcode}', '${city}', ${country_id})
-                                ON DUPLICATE KEY UPDATE id = id;`, (queryErr, rows1) => {
+                                ON DUPLICATE KEY UPDATE id = id;`, (queryErr, _rows1) => {
                 if (queryErr) {
                     connection.rollback(rollbackErr => {
                         if (rollbackErr) {
@@ -65,7 +65,7 @@ db.createUserAndAddress = (name, age, street, postalcode, city, country_id) => {
                     connection.query(`INSERT INTO customeraddresses (customer_id, address_id)
                                         SELECT LAST_INSERT_ID(), id
                                         FROM address 
-                                        WHERE street = '${street}' AND postalcode = '${postalcode}' AND city = '${city}' AND country_id = ${country_id};`, (queryErr3, rows3) => {
+                                        WHERE street = '${street}' AND postalcode = '${postalcode}' AND city = '${city}' AND country_id = ${country_id};`, (queryErr3, _rows3) => {
                         if (queryErr3) {
                             connection.rollback(rollbackErr => {
                                 if (rollbackErr) {

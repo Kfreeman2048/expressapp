@@ -33,7 +33,7 @@ app.post('/create', async (req, res) => {
     }
 });
 
-app.get('/users', async (req, res) => {
+app.get('/users', async (_req, res) => {
     try {
         res.status(200).json({
             users: await db.getUsers(),
