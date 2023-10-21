@@ -79,7 +79,12 @@ db.createUserAndAddress = (name, age, street, postalcode, city, country_id) => {
                                 if (commitErr) {
                                     reject(commitErr.message);
                                 }
+                                if (rows2 === undefined) {
+                                    reject(err)
+                                }
+                                else {
                                 resolve(rows2.insertId);
+                                }
                             });
                         }
                     });
