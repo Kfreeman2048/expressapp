@@ -52,7 +52,7 @@ db.createUserAndAddress = (name, age, street, postalcode, city, country_id) => {
                         }
                     });
                 }
-                connection.query(`INSERT INTO customer (first_name, age) VALUES ('${name}','${age}')`, (queryErr2, rows2) => {
+                connection.query(`INSERT INTO customer (first_name, age) VALUES ('${name}', ${age})`, (queryErr2, rows2) => {
                     if (queryErr2) {
                         connection.rollback(rollbackErr => {
                             if (rollbackErr) {
