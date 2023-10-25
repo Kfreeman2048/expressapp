@@ -20,6 +20,11 @@ app.post('/create', async (req, res) => {
             message: "Ensure you input a name, age, and full address.",
         });
     }
+    if ((typeof age)!=="number" || isNaN(age) || (typeof country_id)!=="number" || isNaN(country_id)) {
+        return res.status(400).json({
+            message: "Age and country id must be numbers."
+        });
+    }
     try {
         let newUserId = await db.createUserAndAddress(name, age, street, postalcode, city, country_id);
         res.status(201).json({
