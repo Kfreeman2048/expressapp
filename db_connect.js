@@ -25,7 +25,13 @@ db.getUsers = () => {
 
 db.getUserById = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM customer WHERE id = ?', [id], (err,rows) => {
+        connection.query(`SELECT c.id customer_id, c.first_name, c.last_name, c.age, 
+                                a.id address_id, a.street, a.postalcode, a.city, co.name country
+                            FROM customer c 
+                            JOIN customeraddresses ca ON ca.customer_id = c.id  
+                            JOIN address a ON a.id = ca.address_id 
+                            JOIN country co ON co.id = a.country_id
+                            WHERE c.id = ?;`, [id], (err,rows) => {
             if(err) {
                 return reject(err);
             }
