@@ -80,14 +80,9 @@ app.put('/users/:userID', async (req, res) => {
     const id = parseInt(req.params.userID);
     const { name, age, street,  city, postalcode, country_id} = req.body;
     try {
-        if (!Object.keys(req.body).length) {
+        if (!name || !age || !street || !city || !postalcode || !country_id || !Object.keys(req.body).length) {
             return res.status(400).json({
-                message: "Request body cannot be empty.",
-            });
-        }
-        if (!name && !age) {
-            return res.status(400).json({
-                message: "Name or age required.",
+                message: "Name, age, street, city, postalcode and country_id required.",
             });
         }
         let dbReturn =  await db.updateUser(id, name, age, street, city, postalcode, country_id);
