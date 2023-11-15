@@ -78,7 +78,7 @@ app.get('/users/:userID', async (req, res) => {
 
 app.put('/users/:userID', async (req, res) => {
     const id = parseInt(req.params.userID);
-    const { name, age, street,  city, postalcode, country_id} = req. body;
+    const { name, age, street,  city, postalcode, country_id} = req.body;
     try {
         if (!Object.keys(req.body).length) {
             return res.status(400).json({
@@ -100,6 +100,11 @@ app.put('/users/:userID', async (req, res) => {
             return res.status(200).json({
             message: "Successfully updated user.",
             });
+        }
+        else {
+            return res.status(400).json({
+                message: "Invalid Request."
+            })
         }
     } catch (error) {
         return res.status(500).json({
