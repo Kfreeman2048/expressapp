@@ -78,7 +78,7 @@ app.get('/users/:userID', async (req, res) => {
 
 app.put('/users/:userID', async (req, res) => {
     const id = parseInt(req.params.userID);
-    const { name, age } = req.body;
+    const { name, age, street,  city, postalcode, country_id} = req. body;
     try {
         if (!Object.keys(req.body).length) {
             return res.status(400).json({
@@ -90,13 +90,13 @@ app.put('/users/:userID', async (req, res) => {
                 message: "Name or age required.",
             });
         }
-        let dbReturn = await db.updateUser(id, name, age);
+        let dbReturn =  await db.updateUser(id, name, age, street, city, postalcode, country_id);
         if (dbReturn.affectedRows == 0) {
             return res.status(404).json({
                 message: "User not found.",
             });
         }
-        if (dbReturn.affectedRows == 1) {
+        if (dbReturn.affectedRows >= 1) {
             return res.status(200).json({
             message: "Successfully updated user.",
             });

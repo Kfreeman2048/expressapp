@@ -101,9 +101,14 @@ db.createUserAndAddress = (name, age, street, postalcode, city, country_id) => {
 }
 
 
-db.updateUser = (id, name, age) => {
+db.updateUser = (id, name, age, street, postalcode, city, country_id) => {
     return new Promise((resolve, reject) => {
-        connection.query(`UPDATE customer SET first_name = '${name}', age = '${age}' WHERE id = ${id}`, (err,rows) => {
+        connection.query(`UPDATE customer c
+                            JOIN customeraddresses ca ON ca.customer_id = c.id  
+                            JOIN address a ON a.id = ca.address_id
+                            JOIN country co ON co.id = a.country_id
+                            SET c.first_name = '${name}', c.age = ${age}, a.street = '${street}', a.postalcode = '${postalcode}', a.city = '${city}' , a.country_id = '${country_id}'
+                            WHERE c.id = ${id}`, (err,rows) => {
             if(err) {
                 return reject(err);
             }
